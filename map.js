@@ -86,11 +86,11 @@ if (routeParams != "all") {
     );
   if (routeParams == "sbr1") {
     setRoute(dataRute.sbrt);
-    setVehicleMarker(dataRute.sbrt, dataTracking[dataRute.sbrt.code]);
+    setVehicleMarker(dataRute.sbrt, dataTracking ? dataTracking[dataRute.sbrt.code] : null);
   }
   setRoute(route);
   setStopList(route, "a");
-  setVehicleMarker(route, dataTracking[route.code]);
+  setVehicleMarker(route, dataTracking ? dataTracking[route.code] : null);
 } else {
   document.title = "Peta jaringan bus Surabaya";
   $("#nav-title").text("Semua Rute");
@@ -102,7 +102,7 @@ if (routeParams != "all") {
     .forEach((key) => {
       let route = dataRute[key];
       setRoute(route);
-      setVehicleMarker(route, dataTracking[route.code]);
+      setVehicleMarker(route, dataTracking ? dataTracking[route.code] : null);
     });
 }
 
@@ -218,6 +218,10 @@ function setStopList(route, direction) {
 }
 
 async function setVehicleMarker(route, URL) {
+  if (!URL) {
+    console.warn(`No tracking URL found for route code: ${route.code}`);
+    return;
+  }
   let id_koridor = route.code;
   let reqAddr;
   if (id_koridor < 10 || id_koridor == 51 || id_koridor == 12) {

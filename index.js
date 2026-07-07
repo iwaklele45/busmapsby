@@ -60,6 +60,16 @@ async function main() {
       reqAddr = "feeder";
     }
 
+    if (!trackData || !trackData[id_koridor]) {
+      console.warn(`No tracking data found for route: ${id_koridor}`);
+      var counter = `0 Bus <br/> ${
+        haltea.length + halteb.length || 0
+      } Halte`;
+      var container = document.getElementById(`counter-${routeCode}`);
+      container.innerHTML = counter;
+      return;
+    }
+
     const options = {
       method: "GET",
       headers: {
